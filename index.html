@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BBQ Token — The Hottest Token on the Block</title>
+  <style>
+    :root {
+      --orange: #FF6B00;
+      --orange-light: #FF9A3C;
+      --red: #E8321A;
+      --dark: #0D0D0D;
+      --dark2: #1A1A1A;
+      --dark3: #242424;
+      --card: #1E1E1E;
+      --text: #F5F5F5;
+      --muted: #888;
+      --border: rgba(255,107,0,0.2);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--dark);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background: rgba(13,13,13,0.9);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--orange), var(--red));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .logo span { font-size: 1.2rem; }
+    nav ul {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--orange); }
+    .btn {
+      background: linear-gradient(135deg, var(--orange), var(--red));
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.1s;
+      display: inline-block;
+    }
+    .btn:hover { opacity: 0.85; transform: scale(1.03); }
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--orange);
+      color: var(--orange);
+    }
+    .btn-outline:hover { background: rgba(255,107,0,0.1); }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 120px 20px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(255,107,0,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,107,0,0.15);
+      border: 1px solid var(--border);
+      color: var(--orange-light);
+      padding: 6px 18px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 12px;
+    }
+    .hero h1 .fire {
+      background: linear-gradient(135deg, var(--orange-light), var(--orange), var(--red));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero h1 .token { color: var(--text); }
+    .hero-sub {
+      font-size: 1.2rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 16px auto 40px;
+    }
+    .hero-cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-top: 80px;
+      flex-wrap: wrap;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--orange-light);
+    }
+    .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+
+    /* SECTIONS */
+    section { padding: 80px 20px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--orange);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+    .section-desc { color: var(--muted); max-width: 560px; font-size: 1rem; margin-bottom: 48px; }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { border-color: var(--orange); transform: translateY(-4px); }
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 14px;
+    }
+    .feature-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { font-size: 0.88rem; color: var(--muted); }
+
+    /* TOKENOMICS */
+    .tokenomics-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 768px) { .tokenomics-wrap { grid-template-columns: 1fr; } }
+    .donut-wrapper {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 0 auto;
+    }
+    svg.donut { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .donut-center {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    .donut-center .num { font-size: 1.5rem; font-weight: 800; color: var(--orange-light); }
+    .donut-center .lbl { font-size: 0.75rem; color: var(--muted); }
+
+    .token-list { display: flex; flex-direction: column; gap: 14px; }
+    .token-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .token-dot {
+      width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
+    }
+    .token-item-info { flex: 1; }
+    .token-item-label { font-size: 0.92rem; font-weight: 600; }
+    .token-item-pct { font-size: 0.8rem; color: var(--muted); }
+    .token-bar-wrap {
+      width: 120px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 50px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .token-bar { height: 100%; border-radius: 50px; }
+
+    .supply-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-top: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .supply-label { font-size: 0.82rem; color: var(--muted); }
+    .supply-val { font-size: 1.3rem; font-weight: 800; color: var(--orange-light); }
+
+    /* ROADMAP */
+    .roadmap { background: var(--dark2); }
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 9px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--orange), transparent);
+    }
+    .tl-item { position: relative; margin-bottom: 40px; }
+    .tl-dot {
+      position: absolute;
+      left: -28px;
+      top: 4px;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--orange);
+      border: 3px solid var(--dark2);
+    }
+    .tl-dot.done { background: var(--orange); }
+    .tl-dot.upcoming { background: var(--dark3); border-color: var(--orange); }
+    .tl-phase { font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--orange); font-weight: 700; margin-bottom: 4px; }
+    .tl-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+    .tl-desc { font-size: 0.87rem; color: var(--muted); }
+
+    /* EXCHANGE */
+    .exchange-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+    .exchange-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: border-color 0.2s, transform 0.2s;
+      text-decoration: none;
+    }
+    .exchange-card:hover { border-color: var(--orange); transform: translateY(-3px); }
+    .exchange-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .exchange-info h4 { font-size: 1rem; font-weight: 700; color: var(--text); }
+    .exchange-info p { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+    .exchange-tag {
+      font-size: 0.7rem;
+      background: rgba(255,107,0,0.15);
+      color: var(--orange);
+      padding: 2px 10px;
+      border-radius: 50px;
+      font-weight: 600;
+      margin-top: 6px;
+      display: inline-block;
+    }
+
+    /* HOW TO BUY */
+    .steps { display: flex; flex-direction: column; gap: 20px; }
+    .step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .step-num {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), var(--red));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .step h4 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+    .step p { font-size: 0.87rem; color: var(--muted); }
+
+    /* CONTRACT */
+    .contract-box {
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+    .contract-label { font-size: 0.78rem; color: var(--muted); white-space: nowrap; }
+    .contract-addr {
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: var(--orange-light);
+      word-break: break-all;
+      flex: 1;
+    }
+    .copy-btn {
+      background: rgba(255,107,0,0.15);
+      border: 1px solid var(--border);
+      color: var(--orange);
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .copy-btn:hover { background: rgba(255,107,0,0.3); }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark2);
+      border-top: 1px solid var(--border);
+      padding: 40px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    footer p { font-size: 0.82rem; color: var(--muted); }
+    .social-links { display: flex; gap: 16px; }
+    .social-links a {
+      width: 38px; height: 38px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .social-links a:hover { border-color: var(--orange); color: var(--orange); }
+
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      nav ul { display: none; }
+      .hero { padding: 80px 20px 50px; }
+      .hero-stats { gap: 24px; }
+      footer { padding: 30px 20px; flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">🔥 BBQ<span> Token</span></div>
+  <ul>
+    <li><a href="#about">概要</a></li>
+    <li><a href="#tokenomics">トークノミクス</a></li>
+    <li><a href="#buy">購入方法</a></li>
+  </ul>
+  <a class="btn" href="#buy">今すぐ購入</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🔥 The Hottest Token on the Block</div>
+  <h1>
+    <span class="fire">BBQ</span><br/>
+    <span class="token">Token</span>
+  </h1>
+  <p class="hero-sub">
+    DeFiの世界に火を点ける。BBQトークンは次世代の分散型エコシステムを構築する暗号資産です。
+  </p>
+  <div class="hero-cta">
+    <a class="btn" href="#buy">🛒 今すぐ購入</a>
+    <a class="btn btn-outline" href="#tokenomics">ホワイトペーパー</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-num">1B</div>
+      <div class="stat-label">総発行枚数</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">$BBQ</div>
+      <div class="stat-label">ティッカーシンボル</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">ERC-20</div>
+      <div class="stat-label">ブロックチェーン</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">0%</div>
+      <div class="stat-label">購入税</div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">BBQとは</div>
+    <div class="section-title">新時代のDeFiトークン</div>
+    <p class="section-desc">
+      BBQトークンはEthereumブロックチェーン上に構築された次世代のDeFiトークンです。スピード、安全性、そしてコミュニティを重視した設計で、世界中の投資家を熱くします。
+    </p>
+    <div class="about-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>超高速トランザクション</h3>
+        <p>Layer2対応により、低コストで高速なトランザクションを実現。ストレスのない取引体験を提供します。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>強固なセキュリティ</h3>
+        <p>監査済みスマートコントラクトと流動性ロック機能により、安全な資産保管を保証します。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <h3>グローバルコミュニティ</h3>
+        <p>世界中のホルダーと繋がるDAO（分散型自律組織）を通じて、プロジェクトの方向性を共に決定します。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <h3>ステーキング報酬</h3>
+        <p>BBQをホールドしてステーキングに参加することで、追加の報酬を獲得できます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOKENOMICS -->
+<section id="tokenomics" style="background: var(--dark2);">
+  <div class="container">
+    <div class="section-label">トークノミクス</div>
+    <div class="section-title">透明性のある配分設計</div>
+    <p class="section-desc">公平な配分を実現するため、すべてのアロケーションを公開しています。</p>
+
+    <div class="tokenomics-wrap">
+      <!-- Donut chart -->
+      <div>
+        <div class="donut-wrapper">
+          <svg class="donut" viewBox="0 0 120 120">
+            <!-- Total circumference for r=46: 2*pi*46 ≈ 289 -->
+            <!-- Public Sale 40% = 115.6 -->
+            <circle cx="60" cy="60" r="46" fill="none" stroke="#FF6B00" stroke-width="18"
+              stroke-dasharray="115.6 173.4" stroke-dashoffset="0"/>
+            <!-- Liquidity 25% = 72.3 -->
+            <circle cx="60" cy="60" r="46" fill="none" stroke="#FF9A3C" stroke-width="18"
+              stroke-dasharray="72.3 216.7" stroke-dashoffset="-115.6"/>
+            <!-- Team 15% = 43.4 -->
+            <circle cx="60" cy="60" r="46" fill="none" stroke="#E8321A" stroke-width="18"
+              stroke-dasharray="43.4 245.6" stroke-dashoffset="-187.9"/>
+            <!-- Marketing 10% = 28.9 -->
+            <circle cx="60" cy="60" r="46" fill="none" stroke="#FF5500" stroke-width="18"
+              stroke-dasharray="28.9 260.1" stroke-dashoffset="-231.3"/>
+            <!-- Ecosystem 10% = 28.9 -->
+            <circle cx="60" cy="60" r="46" fill="none" stroke="#CC2200" stroke-width="18"
+              stroke-dasharray="28.9 260.1" stroke-dashoffset="-260.2"/>
+          </svg>
+          <div class="donut-center">
+            <div class="num">1B</div>
+            <div class="lbl">$BBQ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div>
+        <div class="token-list">
+          <div class="token-item">
+            <div class="token-dot" style="background:#FF6B00;"></div>
+            <div class="token-item-info">
+              <div class="token-item-label">パブリックセール</div>
+              <div class="token-item-pct">400,000,000 BBQ</div>
+            </div>
+            <div class="token-bar-wrap"><div class="token-bar" style="width:40%;background:#FF6B00;"></div></div>
+            <span style="font-weight:700;color:#FF6B00;width:36px;text-align:right;">40%</span>
+          </div>
+          <div class="token-item">
+            <div class="token-dot" style="background:#FF9A3C;"></div>
+            <div class="token-item-info">
+              <div class="token-item-label">流動性（DEX）</div>
+              <div class="token-item-pct">250,000,000 BBQ</div>
+            </div>
+            <div class="token-bar-wrap"><div class="token-bar" style="width:25%;background:#FF9A3C;"></div></div>
+            <span style="font-weight:700;color:#FF9A3C;width:36px;text-align:right;">25%</span>
+          </div>
+          <div class="token-item">
+            <div class="token-dot" style="background:#E8321A;"></div>
+            <div class="token-item-info">
+              <div class="token-item-label">チーム・開発</div>
+              <div class="token-item-pct">150,000,000 BBQ</div>
+            </div>
+            <div class="token-bar-wrap"><div class="token-bar" style="width:15%;background:#E8321A;"></div></div>
+            <span style="font-weight:700;color:#E8321A;width:36px;text-align:right;">15%</span>
+          </div>
+          <div class="token-item">
+            <div class="token-dot" style="background:#FF5500;"></div>
+            <div class="token-item-info">
+              <div class="token-item-label">マーケティング</div>
+              <div class="token-item-pct">100,000,000 BBQ</div>
+            </div>
+            <div class="token-bar-wrap"><div class="token-bar" style="width:10%;background:#FF5500;"></div></div>
+            <span style="font-weight:700;color:#FF5500;width:36px;text-align:right;">10%</span>
+          </div>
+          <div class="token-item">
+            <div class="token-dot" style="background:#CC2200;"></div>
+            <div class="token-item-info">
+              <div class="token-item-label">エコシステム</div>
+              <div class="token-item-pct">100,000,000 BBQ</div>
+            </div>
+            <div class="token-bar-wrap"><div class="token-bar" style="width:10%;background:#CC2200;"></div></div>
+            <span style="font-weight:700;color:#CC2200;width:36px;text-align:right;">10%</span>
+          </div>
+        </div>
+
+        <div class="supply-box">
+          <div>
+            <div class="supply-label">総発行枚数</div>
+            <div class="supply-val">1,000,000,000 BBQ</div>
+          </div>
+          <div>
+            <div class="supply-label">ブロックチェーン</div>
+            <div class="supply-val">Ethereum (ERC-20)</div>
+          </div>
+        </div>
+
+        <div class="contract-box">
+          <span class="contract-label">コントラクトアドレス</span>
+          <span class="contract-addr" id="addr">0x000...000000000000000000BBQ</span>
+          <button class="copy-btn" onclick="copyAddr()">コピー</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section>
+  <div class="container">
+    <div class="section-label">ロードマップ</div>
+    <div class="section-title">BBQの未来計画</div>
+    <p class="section-desc">段階的な開発計画で、持続的な成長を目指します。</p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot done"></div>
+        <div class="tl-phase">Phase 1 — 2024 Q1 ✅</div>
+        <div class="tl-title">プロジェクト立ち上げ</div>
+        <div class="tl-desc">ホワイトペーパー公開、コミュニティ形成、スマートコントラクト監査完了。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot done"></div>
+        <div class="tl-phase">Phase 2 — 2024 Q2 ✅</div>
+        <div class="tl-title">DEX上場 & パブリックセール</div>
+        <div class="tl-desc">Uniswap上場、流動性プールの設置、プレセール実施。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot upcoming"></div>
+        <div class="tl-phase">Phase 3 — 2024 Q3 🚀</div>
+        <div class="tl-title">CEX上場 & ステーキング開始</div>
+        <div class="tl-desc">大手中央集権型取引所への上場申請、ステーキングプラットフォームのリリース。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot upcoming"></div>
+        <div class="tl-phase">Phase 4 — 2024 Q4</div>
+        <div class="tl-title">DAO & エコシステム拡張</div>
+        <div class="tl-desc">DAO投票機能のリリース、パートナーシップ拡充、NFT連携。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO BUY -->
+<section id="buy" style="background: var(--dark2);">
+  <div class="container">
+    <div class="section-label">購入方法</div>
+    <div class="section-title">$BBQを手に入れよう</div>
+    <p class="section-desc">4ステップで簡単に購入できます。</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <h4>ウォレットを準備する</h4>
+            <p>MetaMaskやTrust Walletなど、ERC-20対応のウォレットをインストールします。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <h4>ETHを購入する</h4>
+            <p>取引所でETH（イーサリアム）を購入し、ウォレットに送金します。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <h4>DEXに接続する</h4>
+            <p>UniswapなどのDEXにアクセスし、ウォレットを接続します。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div>
+            <h4>$BBQにスワップ</h4>
+            <p>ETHを$BBQにスワップします。スリッページは3〜5%に設定してください。</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="margin-bottom:24px;">
+          <div class="section-label" style="margin-bottom:10px;">取引所一覧</div>
+          <div class="exchange-grid" style="grid-template-columns:1fr;">
+            <a href="#" class="exchange-card">
+              <div class="exchange-icon" style="background:rgba(255,107,0,0.15);">🦄</div>
+              <div class="exchange-info">
+                <h4>Uniswap V3</h4>
+                <p>分散型取引所（DEX）</p>
+                <span class="exchange-tag">DEX</span>
+              </div>
+            </a>
+            <a href="#" class="exchange-card">
+              <div class="exchange-icon" style="background:rgba(59,130,246,0.15);">🔵</div>
+              <div class="exchange-info">
+                <h4>Gate.io</h4>
+                <p>中央集権型取引所（CEX）</p>
+                <span class="exchange-tag">CEX</span>
+              </div>
+            </a>
+            <a href="#" class="exchange-card">
+              <div class="exchange-icon" style="background:rgba(16,185,129,0.15);">🟢</div>
+              <div class="exchange-info">
+                <h4>MEXC Global</h4>
+                <p>中央集権型取引所（CEX）</p>
+                <span class="exchange-tag">CEX</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="logo" style="margin-bottom:6px;">🔥 BBQ Token</div>
+    <p>© 2024 BBQ Token. All rights reserved. 投資は自己責任でお願いします。</p>
+  </div>
+  <div class="social-links">
+    <a href="#" title="Twitter">𝕏</a>
+    <a href="#" title="Telegram">✈</a>
+    <a href="#" title="Discord">💬</a>
+    <a href="#" title="GitHub">⌨</a>
+  </div>
+</footer>
+
+<script>
+  function copyAddr() {
+    const addr = document.getElementById('addr').textContent;
+    navigator.clipboard.writeText(addr).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'コピー済み ✓';
+      setTimeout(() => btn.textContent = 'コピー', 2000);
+    });
+  }
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Fade-in on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.feature-card, .tl-item, .step, .exchange-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
